@@ -35,3 +35,30 @@ tbody tr:nth-child(even) {
   width: 0.5rem;
   height: 0.5rem;
 }
+
+thead th span.fa-arrow-up{
+  display: inline-block;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  border: 1.4px solid #6c00bd;
+  border-radius: 50%;
+  
+  text-align: center;
+  font-size: 1rem;
+
+  margin-left: .5rem;
+
+}
+
+thead th.active span.fa-arrow-up{
+  border: 1.4px solid 6c00bd;
+}
+
+thead th{
+  cursor: pointer;
+}
+
+thead th.active{
+  color: #6C00BD;
+}

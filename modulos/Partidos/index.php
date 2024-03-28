@@ -35,7 +35,8 @@ $result = $link->query($sql);
             <table class="table table-striped" id="tablaid" style="width:100%">
                 <thead>
                     <tr>
-                        <th scope="col">Nombre</th>
+                        <th scope="col">Nombre <span><i class="fa-solid fa-arrow-up"></i></span></th>
+                        <th>Acciones <span><i class="fa-solid fa-arrow-up"></i></span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,6 +48,7 @@ $result = $link->query($sql);
                         while ($row = $result->fetch_assoc()) { ?>
                             <tr>
                                 <td scope="row"><?php echo $row['Nombre'] ?></td>
+                                <td>Editar</td>
                             </tr>
                     <?php
                         }
