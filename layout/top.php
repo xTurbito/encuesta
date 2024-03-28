@@ -4,10 +4,14 @@ $url_base = "http://localhost/encuesta/";
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS -->
   <link rel="stylesheet" href="http://localhost/encuesta/layout/style.css">
+  <link rel="stylesheet" href="http://localhost/encuesta/Assets/tables.css">
+  <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <!-- SWEETALERT -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -15,19 +19,18 @@ $url_base = "http://localhost/encuesta/";
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!--=============== REMIXICONS ===============-->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
-  <!--=============== CSS ===============-->
 
-  <title>Responsive dropdown menu - Bedimcode</title>
+  <title>Encuesta</title>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom" >
-  <div class="container justify-content-center ">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse flex-grow-0 " id="navbarNavDropdown">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container justify-content-center ">
+      <a class="navbar-brand" href="#">Encuestador</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse flex-grow-0 " id="navbarNavDropdown">
         <ul class="navbar-nav text-center">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="<?php echo $url_base ?>" class="nav__link">Inicio</a>
@@ -55,7 +58,7 @@ $url_base = "http://localhost/encuesta/";
             </ul>
           </li>
         </ul>
-      
+
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
