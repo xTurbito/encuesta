@@ -3,43 +3,29 @@ require("../../config/dbcontext.php");
 include("../../layout/top.php");
 
 // Ejecutar la primera consulta SQL
-$sql = "SELECT manzanas.*, 
-secciones.Nombre, 
-jefasmanzanas.NomJefManzana,
-familias.NumVotantes
-FROM manzanas
-INNER JOIN secciones ON manzanas.idSeccion = secciones.idSeccion
-INNER JOIN jefasmanzanas ON manzanas.idJefaManzana = jefasmanzanas.idJefaManzana
-INNER JOIN (
-SELECT idManzana, SUM(NumVotantes) AS NumVotantes
-FROM familias
-GROUP BY idManzana
-) AS familias ON manzanas.idManzana = familias.idManzana";
-
+$sql = "SELECT 
+m.NombreManzana AS NombreManzana,
+m.NumCasas AS TotalCasas,
+SUM(f.NumVotantes) AS TotalVotantes,
+jefas.NomJefManzana AS JefaManzana,
+s.Nombre AS Seccion,
+(SELECT COUNT(*) FROM votantes v1 WHERE v1.idPartido = 1 AND v1.idFamilia IN (SELECT idFamilia FROM Familias WHERE idManzana = m.idManzana)) AS PRD,
+(SELECT COUNT(*) FROM votantes v2 WHERE v2.idPartido = 2 AND v2.idFamilia IN (SELECT idFamilia FROM Familias WHERE idManzana = m.idManzana)) AS PAN,
+(SELECT COUNT(*) FROM votantes v3 WHERE v3.idPartido = 3 AND v3.idFamilia IN (SELECT idFamilia FROM Familias WHERE idManzana = m.idManzana)) AS MORENA,
+(SELECT COUNT(*) FROM votantes v3 WHERE v3.idPartido = 4 AND v3.idFamilia IN (SELECT idFamilia FROM Familias WHERE idManzana = m.idManzana)) AS NOSABE
+FROM 
+manzanas m
+LEFT JOIN 
+Familias f ON m.idManzana = f.idManzana
+LEFT JOIN 
+jefasmanzanas jefas ON m.idJefaManzana = jefas.idJefaManzana
+LEFT JOIN 
+Secciones s ON m.idSeccion = s.idSeccion
+GROUP BY 
+m.NombreManzana, jefas.NomJefManzana, s.Nombre;
+";
 $result = $link->query($sql);
 
-// Ejecutar la segunda consulta SQL
-$sql2 = "SELECT m.idManzana,
-s.idSeccion,
-p.idPartido,
-COUNT(*) AS TotalRegistrosPorPartido
-FROM manzanas m
-INNER JOIN secciones s ON m.idSeccion = s.idSeccion
-INNER JOIN familias f ON m.idManzana = f.idManzana
-INNER JOIN votantes v ON f.idFamilia = v.idFamilia
-INNER JOIN partidos p ON v.idPartido = p.idPartido
-GROUP BY m.idManzana, s.idSeccion, p.idPartido";
-
-$result2 = $link->query($sql2);
-
-// Crear un arreglo asociativo para almacenar los totales de votantes por partido
-$totales_por_partido = array();
-while ($row = $result2->fetch_assoc()) {
-    $idManzana = $row['idManzana'];
-    $idSeccion = $row['idSeccion'];
-    $idPartido = $row['idPartido'];
-    $totales_por_partido["$idManzana-$idSeccion-$idPartido"] = $row['TotalRegistrosPorPartido'];
-}
 ?>
 
 <div class="card table mt-5">
@@ -57,25 +43,27 @@ while ($row = $result2->fetch_assoc()) {
                         <th scope="col">Jefa Manzana</th>
                         <th scope="col">Seccion</th>
                         <th scope="col">MORENA</th>
-                        <th scope="col">PT</th>
+                        <th scope="col">PAN</th>
                         <th scope="col">PRD</th>
+                        <th scope="col">NOSABE</th> <!-- Agregamos la columna para NOSABE -->
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) { 
+                        while ($row = $result->fetch_assoc()) {
                             // Aquí imprimes los datos de cada manzana
-                            ?>
+                    ?>
                             <tr>
-                                <td scope="row"><?php echo $row['idManzana'] ?></td>
-                                <td scope="row"><?php echo $row['NumCasas'] ?></td>
-                                <td scope="row"><?php echo $row['NumVotantes'] ?></td>
-                                <td scope="row"><?php echo $row['NomJefManzana'] ?></td>
-                                <td scope="row"><?php echo $row['Nombre'] ?></td>
-                                <td scope="row"><?php echo isset($totales_por_partido[$row['idManzana'].'-'.$row['idSeccion'].'-1']) ? $totales_por_partido[$row['idManzana'].'-'.$row['idSeccion'].'-1'] : 0; ?></td>
-                                <td scope="row"><?php echo isset($totales_por_partido[$row['idManzana'].'-'.$row['idSeccion'].'-2']) ? $totales_por_partido[$row['idManzana'].'-'.$row['idSeccion'].'-2'] : 0; ?></td>
-                                <td scope="row"><?php echo isset($totales_por_partido[$row['idManzana'].'-'.$row['idSeccion'].'-3']) ? $totales_por_partido[$row['idManzana'].'-'.$row['idSeccion'].'-3'] : 0; ?></td>
+                                <td scope="row"><?php echo $row['NombreManzana'] ?></td>
+                                <td scope="row"><?php echo $row['TotalCasas'] ?></td>
+                                <td scope="row"><?php echo $row['TotalVotantes'] ?></td>
+                                <td scope="row"><?php echo $row['JefaManzana'] ?></td>
+                                <td scope="row"><?php echo $row['Seccion'] ?></td>
+                                <td scope="row"><?php echo $row['MORENA'] ?></td> <!-- Mostramos el número de votantes de MORENA -->
+                                <td scope="row"><?php echo $row['PAN'] ?></td> <!-- Mostramos el número de votantes de PT -->
+                                <td scope="row"><?php echo $row['PRD'] ?></td> <!-- Mostramos el número de votantes de PRD -->
+                                <td scope="row"><?php echo $row['NOSABE'] ?></td> <!-- Mostramos el número de votantes de NOSABE -->
                             </tr>
                     <?php
                         }
