@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2024 at 05:39 AM
+-- Generation Time: Mar 30, 2024 at 08:41 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -102,9 +102,11 @@ CREATE TABLE `manzanas` (
 --
 
 INSERT INTO `manzanas` (`idManzana`, `idSeccion`, `idJefaManzana`, `NombreManzana`, `NumCasas`) VALUES
-(1, 1, 3, 'Calle 30 Esquina Dona Rosa', 10),
-(2, 1, 2, 'Calle 63 Esquina Tacos', 20),
-(3, 1, 1, 'Calle 47 Ferreteria', 15);
+(1, 2, 3, 'Manzana 1', 10),
+(2, 1, 2, 'Manzana 2', 20),
+(3, 1, 1, 'Manzana 3', 15),
+(4, 2, 1, 'Manzana 4', 5),
+(5, 2, 1, 'Manzana 4', 5);
 
 -- --------------------------------------------------------
 
@@ -123,7 +125,7 @@ CREATE TABLE `partidos` (
 
 INSERT INTO `partidos` (`idPartido`, `Nombre`) VALUES
 (1, 'PRD'),
-(2, 'PT'),
+(2, 'PAN'),
 (3, 'MORENA'),
 (4, 'NO SABE');
 
@@ -158,17 +160,18 @@ CREATE TABLE `votantes` (
   `idVotante` int(11) NOT NULL,
   `NomVotante` varchar(255) DEFAULT NULL,
   `idPartido` int(11) DEFAULT NULL,
-  `idFamilia` int(11) DEFAULT NULL
+  `idFamilia` int(11) DEFAULT NULL,
+  `idManzana` int(11) DEFAULT NULL,
+  `idSeccion` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `votantes`
 --
 
-INSERT INTO `votantes` (`idVotante`, `NomVotante`, `idPartido`, `idFamilia`) VALUES
-(1, 'Miguel Alcocer', 3, 1),
-(2, 'Frida Gonzalez', 3, 1),
-(3, 'Angel Gurubel', 2, 3);
+INSERT INTO `votantes` (`idVotante`, `NomVotante`, `idPartido`, `idFamilia`, `idManzana`, `idSeccion`) VALUES
+(6, 'Miguel Alcocer', 3, 4, 1, 2),
+(7, 'Frida Gonzalez', 2, 2, 2, 1);
 
 --
 -- Indexes for dumped tables
@@ -220,7 +223,9 @@ ALTER TABLE `secciones`
 ALTER TABLE `votantes`
   ADD PRIMARY KEY (`idVotante`),
   ADD KEY `fk_idPartido` (`idPartido`),
-  ADD KEY `fk_idFamilia` (`idFamilia`);
+  ADD KEY `fk_idFamilia` (`idFamilia`),
+  ADD KEY `idManzana` (`idManzana`),
+  ADD KEY `idSeccion` (`idSeccion`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -248,7 +253,7 @@ ALTER TABLE `jefassecciones`
 -- AUTO_INCREMENT for table `manzanas`
 --
 ALTER TABLE `manzanas`
-  MODIFY `idManzana` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idManzana` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `partidos`
@@ -266,7 +271,7 @@ ALTER TABLE `secciones`
 -- AUTO_INCREMENT for table `votantes`
 --
 ALTER TABLE `votantes`
-  MODIFY `idVotante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idVotante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -296,7 +301,9 @@ ALTER TABLE `secciones`
 --
 ALTER TABLE `votantes`
   ADD CONSTRAINT `fk_idFamilia` FOREIGN KEY (`idFamilia`) REFERENCES `familias` (`idFamilia`),
-  ADD CONSTRAINT `fk_idPartido` FOREIGN KEY (`idPartido`) REFERENCES `partidos` (`idPartido`);
+  ADD CONSTRAINT `fk_idPartido` FOREIGN KEY (`idPartido`) REFERENCES `partidos` (`idPartido`),
+  ADD CONSTRAINT `votantes_ibfk_1` FOREIGN KEY (`idManzana`) REFERENCES `manzanas` (`idManzana`),
+  ADD CONSTRAINT `votantes_ibfk_2` FOREIGN KEY (`idSeccion`) REFERENCES `secciones` (`idSeccion`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
