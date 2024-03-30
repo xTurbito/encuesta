@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 25-03-2024 a las 05:23:03
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Mar 30, 2024 at 05:39 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,119 +18,98 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `encuesta`
+-- Database: `encuesta`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detallefamilia`
---
-
-CREATE TABLE `detallefamilia` (
-  `idDetalleFamilia` int(11) NOT NULL,
-  `idFamilia` int(11) DEFAULT NULL,
-  `NumeroVotantes` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `detallefamilia`
---
-
-INSERT INTO `detallefamilia` (`idDetalleFamilia`, `idFamilia`, `NumeroVotantes`) VALUES
-(1, 1, 5),
-(2, 2, 4),
-(3, 3, 6);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `encuestadora`
---
-
-CREATE TABLE `encuestadora` (
-  `idEncuestadora` int(11) NOT NULL,
-  `idJefa` int(11) DEFAULT NULL,
-  `Nombre` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `encuestadora`
---
-
-INSERT INTO `encuestadora` (`idEncuestadora`, `idJefa`, `Nombre`) VALUES
-(1, 1, 'Encuestadora A'),
-(2, 2, 'Encuestadora B'),
-(3, 3, 'Encuestadora C');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `familias`
+-- Table structure for table `familias`
 --
 
 CREATE TABLE `familias` (
   `idFamilia` int(11) NOT NULL,
   `idManzana` int(11) DEFAULT NULL,
-  `idPartido` int(11) DEFAULT NULL,
-  `idDetalleFamilia` int(11) DEFAULT NULL,
-  `Nombre` varchar(255) DEFAULT NULL
+  `Nombre` varchar(255) DEFAULT NULL,
+  `NumVotantes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `familias`
+-- Dumping data for table `familias`
 --
 
-INSERT INTO `familias` (`idFamilia`, `idManzana`, `idPartido`, `idDetalleFamilia`, `Nombre`) VALUES
-(1, 1, 1, 1, 'Familia López'),
-(2, 2, 2, 2, 'Familia García'),
-(3, 3, 3, 3, 'Familia Rodríguez');
+INSERT INTO `familias` (`idFamilia`, `idManzana`, `Nombre`, `NumVotantes`) VALUES
+(1, 1, 'Familia López', 5),
+(2, 2, 'Familia García', 3),
+(3, 3, 'Familia Rodríguez', 4),
+(4, 1, 'Familia Alcocer', 3);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `jefasmanzanas`
+-- Table structure for table `jefasmanzanas`
 --
 
 CREATE TABLE `jefasmanzanas` (
-  `idJefa` int(11) NOT NULL,
-  `Nombre` varchar(255) DEFAULT NULL,
-  `idSeccion` int(11) DEFAULT NULL
+  `idJefaManzana` int(11) NOT NULL,
+  `NomJefManzana` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `jefasmanzanas`
+-- Dumping data for table `jefasmanzanas`
 --
 
-INSERT INTO `jefasmanzanas` (`idJefa`, `Nombre`, `idSeccion`) VALUES
-(1, 'María', 1),
-(2, 'Pedro', 2),
-(3, 'Ana', 3);
+INSERT INTO `jefasmanzanas` (`idJefaManzana`, `NomJefManzana`) VALUES
+(1, 'María'),
+(2, 'Pedro'),
+(3, 'Ana');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `manzanas`
+-- Table structure for table `jefassecciones`
+--
+
+CREATE TABLE `jefassecciones` (
+  `idJefaSeccion` int(11) NOT NULL,
+  `Nombre` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `jefassecciones`
+--
+
+INSERT INTO `jefassecciones` (`idJefaSeccion`, `Nombre`) VALUES
+(1, 'Miguel Alcocer'),
+(2, 'Frida Gonzalez');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `manzanas`
 --
 
 CREATE TABLE `manzanas` (
   `idManzana` int(11) NOT NULL,
-  `idSeccion` int(11) DEFAULT NULL
+  `idSeccion` int(11) DEFAULT NULL,
+  `idJefaManzana` int(11) DEFAULT NULL,
+  `NombreManzana` varchar(255) NOT NULL,
+  `NumCasas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `manzanas`
+-- Dumping data for table `manzanas`
 --
 
-INSERT INTO `manzanas` (`idManzana`, `idSeccion`) VALUES
-(1, 1),
-(2, 2),
-(3, 3);
+INSERT INTO `manzanas` (`idManzana`, `idSeccion`, `idJefaManzana`, `NombreManzana`, `NumCasas`) VALUES
+(1, 1, 3, 'Calle 30 Esquina Dona Rosa', 10),
+(2, 1, 2, 'Calle 63 Esquina Tacos', 20),
+(3, 1, 1, 'Calle 47 Ferreteria', 15);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `partidos`
+-- Table structure for table `partidos`
 --
 
 CREATE TABLE `partidos` (
@@ -139,7 +118,7 @@ CREATE TABLE `partidos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `partidos`
+-- Dumping data for table `partidos`
 --
 
 INSERT INTO `partidos` (`idPartido`, `Nombre`) VALUES
@@ -151,196 +130,173 @@ INSERT INTO `partidos` (`idPartido`, `Nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `secciones`
+-- Table structure for table `secciones`
 --
 
 CREATE TABLE `secciones` (
   `idSeccion` int(11) NOT NULL,
-  `Nombre` varchar(255) DEFAULT NULL
+  `Nombre` varchar(255) DEFAULT NULL,
+  `idJefaSeccion` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `secciones`
+-- Dumping data for table `secciones`
 --
 
-INSERT INTO `secciones` (`idSeccion`, `Nombre`) VALUES
-(1, 'Sección A'),
-(2, 'Sección B'),
-(3, 'Sección C');
+INSERT INTO `secciones` (`idSeccion`, `Nombre`, `idJefaSeccion`) VALUES
+(1, 'Sección A', NULL),
+(2, 'Sección B', NULL),
+(3, 'Sección C', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `votantes`
+-- Table structure for table `votantes`
 --
 
 CREATE TABLE `votantes` (
-  `idVotantes` int(11) NOT NULL,
-  `idDetalleFamilia` int(11) DEFAULT NULL,
-  `Nombre` varchar(255) DEFAULT NULL,
-  `idPartido` int(255) DEFAULT NULL
+  `idVotante` int(11) NOT NULL,
+  `NomVotante` varchar(255) DEFAULT NULL,
+  `idPartido` int(11) DEFAULT NULL,
+  `idFamilia` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `votantes`
+-- Dumping data for table `votantes`
 --
 
-INSERT INTO `votantes` (`idVotantes`, `idDetalleFamilia`, `Nombre`, `idPartido`) VALUES
-(1, 1, 'Juan', 1),
-(2, 2, 'María', 2),
-(3, 3, 'Pedro', 3);
+INSERT INTO `votantes` (`idVotante`, `NomVotante`, `idPartido`, `idFamilia`) VALUES
+(1, 'Miguel Alcocer', 3, 1),
+(2, 'Frida Gonzalez', 3, 1),
+(3, 'Angel Gurubel', 2, 3);
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `detallefamilia`
---
-ALTER TABLE `detallefamilia`
-  ADD PRIMARY KEY (`idDetalleFamilia`),
-  ADD KEY `idFamilia` (`idFamilia`);
-
---
--- Indices de la tabla `encuestadora`
---
-ALTER TABLE `encuestadora`
-  ADD PRIMARY KEY (`idEncuestadora`),
-  ADD KEY `idJefa` (`idJefa`);
-
---
--- Indices de la tabla `familias`
+-- Indexes for table `familias`
 --
 ALTER TABLE `familias`
   ADD PRIMARY KEY (`idFamilia`),
-  ADD KEY `idDetalleFamilia` (`idDetalleFamilia`);
+  ADD KEY `fk_idManzana` (`idManzana`);
 
 --
--- Indices de la tabla `jefasmanzanas`
+-- Indexes for table `jefasmanzanas`
 --
 ALTER TABLE `jefasmanzanas`
-  ADD PRIMARY KEY (`idJefa`),
-  ADD KEY `idSeccion` (`idSeccion`);
+  ADD PRIMARY KEY (`idJefaManzana`);
 
 --
--- Indices de la tabla `manzanas`
+-- Indexes for table `jefassecciones`
+--
+ALTER TABLE `jefassecciones`
+  ADD PRIMARY KEY (`idJefaSeccion`);
+
+--
+-- Indexes for table `manzanas`
 --
 ALTER TABLE `manzanas`
   ADD PRIMARY KEY (`idManzana`),
-  ADD KEY `idSeccion` (`idSeccion`);
+  ADD KEY `idSeccion` (`idSeccion`),
+  ADD KEY `fk_idJefaManzana` (`idJefaManzana`);
 
 --
--- Indices de la tabla `partidos`
+-- Indexes for table `partidos`
 --
 ALTER TABLE `partidos`
   ADD PRIMARY KEY (`idPartido`);
 
 --
--- Indices de la tabla `secciones`
+-- Indexes for table `secciones`
 --
 ALTER TABLE `secciones`
-  ADD PRIMARY KEY (`idSeccion`);
+  ADD PRIMARY KEY (`idSeccion`),
+  ADD KEY `fk_idJefaSeccion` (`idJefaSeccion`);
 
 --
--- Indices de la tabla `votantes`
+-- Indexes for table `votantes`
 --
 ALTER TABLE `votantes`
-  ADD PRIMARY KEY (`idVotantes`),
-  ADD KEY `idDetalleFamilia` (`idDetalleFamilia`),
-  ADD KEY `idPartido` (`idPartido`);
+  ADD PRIMARY KEY (`idVotante`),
+  ADD KEY `fk_idPartido` (`idPartido`),
+  ADD KEY `fk_idFamilia` (`idFamilia`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `detallefamilia`
---
-ALTER TABLE `detallefamilia`
-  MODIFY `idDetalleFamilia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `encuestadora`
---
-ALTER TABLE `encuestadora`
-  MODIFY `idEncuestadora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `familias`
+-- AUTO_INCREMENT for table `familias`
 --
 ALTER TABLE `familias`
-  MODIFY `idFamilia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idFamilia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `jefasmanzanas`
+-- AUTO_INCREMENT for table `jefasmanzanas`
 --
 ALTER TABLE `jefasmanzanas`
-  MODIFY `idJefa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idJefaManzana` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `manzanas`
+-- AUTO_INCREMENT for table `jefassecciones`
+--
+ALTER TABLE `jefassecciones`
+  MODIFY `idJefaSeccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `manzanas`
 --
 ALTER TABLE `manzanas`
   MODIFY `idManzana` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `partidos`
+-- AUTO_INCREMENT for table `partidos`
 --
 ALTER TABLE `partidos`
   MODIFY `idPartido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `secciones`
+-- AUTO_INCREMENT for table `secciones`
 --
 ALTER TABLE `secciones`
   MODIFY `idSeccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `votantes`
+-- AUTO_INCREMENT for table `votantes`
 --
 ALTER TABLE `votantes`
-  MODIFY `idVotantes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idVotante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `detallefamilia`
---
-ALTER TABLE `detallefamilia`
-  ADD CONSTRAINT `detallefamilia_ibfk_1` FOREIGN KEY (`idFamilia`) REFERENCES `familias` (`idFamilia`);
-
---
--- Filtros para la tabla `encuestadora`
---
-ALTER TABLE `encuestadora`
-  ADD CONSTRAINT `encuestadora_ibfk_1` FOREIGN KEY (`idJefa`) REFERENCES `jefasmanzanas` (`idJefa`);
-
---
--- Filtros para la tabla `familias`
+-- Constraints for table `familias`
 --
 ALTER TABLE `familias`
-  ADD CONSTRAINT `familias_ibfk_1` FOREIGN KEY (`idDetalleFamilia`) REFERENCES `detallefamilia` (`idDetalleFamilia`);
+  ADD CONSTRAINT `fk_idManzana` FOREIGN KEY (`idManzana`) REFERENCES `manzanas` (`idManzana`);
 
 --
--- Filtros para la tabla `jefasmanzanas`
---
-ALTER TABLE `jefasmanzanas`
-  ADD CONSTRAINT `jefasmanzanas_ibfk_1` FOREIGN KEY (`idSeccion`) REFERENCES `secciones` (`idSeccion`);
-
---
--- Filtros para la tabla `manzanas`
+-- Constraints for table `manzanas`
 --
 ALTER TABLE `manzanas`
+  ADD CONSTRAINT `fk_idJefaManzana` FOREIGN KEY (`idJefaManzana`) REFERENCES `jefasmanzanas` (`idJefaManzana`),
   ADD CONSTRAINT `manzanas_ibfk_1` FOREIGN KEY (`idSeccion`) REFERENCES `secciones` (`idSeccion`);
 
 --
--- Filtros para la tabla `votantes`
+-- Constraints for table `secciones`
+--
+ALTER TABLE `secciones`
+  ADD CONSTRAINT `fk_idJefaSeccion` FOREIGN KEY (`idJefaSeccion`) REFERENCES `jefassecciones` (`idJefaSeccion`);
+
+--
+-- Constraints for table `votantes`
 --
 ALTER TABLE `votantes`
-  ADD CONSTRAINT `votantes_ibfk_1` FOREIGN KEY (`idDetalleFamilia`) REFERENCES `detallefamilia` (`idDetalleFamilia`),
-  ADD CONSTRAINT `votantes_ibfk_2` FOREIGN KEY (`idPartido`) REFERENCES `partidos` (`idPartido`);
+  ADD CONSTRAINT `fk_idFamilia` FOREIGN KEY (`idFamilia`) REFERENCES `familias` (`idFamilia`),
+  ADD CONSTRAINT `fk_idPartido` FOREIGN KEY (`idPartido`) REFERENCES `partidos` (`idPartido`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
