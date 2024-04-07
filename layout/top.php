@@ -51,7 +51,7 @@ $url_base = "http://localhost/encuesta/";
                   </a>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="<?php echo $url_base ?>/modulos/manzanas"">Ver Manzanas</a></li>
-                    <li><a class="dropdown-item" href="<?php echo $url_base ?>/modulos/Manzaneras">Jefas de Manzana</a></li>
+                    <li><a class="dropdown-item" href="<?php echo $url_base ?>/modulos/Manzaneras/">Jefas de Manzana</a></li>
             </ul>
           </li>
                     <li class=" nav-item">
